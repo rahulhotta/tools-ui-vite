@@ -1,0 +1,44 @@
+{
+    "features": [
+      {
+        "groupId": 1,
+        "name": "Image Tools",
+        "children": [
+          {
+            "childId": 1,
+            "name": "Image Converter",
+            "route": "images/image-converter",
+            "icon": "LuImageUp",
+            "description": "Convert one image type into another",
+            "badge": false,
+            "badgeText": null
+          },
+          {
+            "childId": 2,
+            "name": "Coming Soon",
+            "route": "",
+            "icon": "PiSelectionBackgroundDuotone",
+            "description": "New Feature is Coming soon",
+            "badge": true,
+            "badgeText": "Soon"
+          }
+        ]
+      },
+      {
+        "groupId": 2,
+        "name": "Other Tools",
+        "children": [
+          {
+            "childId": 1,
+            "name": "URL Shortener",
+            "route": "links/url-shortener",
+            "icon": "LuLink",
+            "description": "Shorten your url.",
+            "badge": true,
+            "badgeText": "New"
+          }
+        ]
+      }
+    ]
+  }
+  
