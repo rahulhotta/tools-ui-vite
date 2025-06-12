@@ -7,8 +7,9 @@ import ExtensionSelector from './ExtensionSelector/extensionSelector';
 import ConvertableExtensions from '../../assets/Jsons/ConvertableExtensions.json'
 // import successAnimation from 'public/Animations/success.lottie'
 function ImageConverter() {
-    const [image, setImage] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string | null>(null);
+    const [image, setImage] = useState<File[]>([]);
+    const [preview, setPreview] = useState<string[]>([]); 
+
     const [messageApi, contextHolder] = message.useMessage();
 
     const allowedExtensions = ConvertableExtensions.map((extension)=>{
@@ -16,28 +17,31 @@ function ImageConverter() {
     })
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
+  const file = event.target.files;
   if (!file) return;
-
-  const fileExtension = file.name.split('.').pop()?.toLowerCase();
-  if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-    messageApi.error("This image type is not allowed!");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    let result: string | null = null;
-    if (typeof reader.result === 'string') {
-         result = reader.result;
+  const uploadedFiles: File[] = [...file];
+  uploadedFiles.forEach(file => { 
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+      // messageApi.error("This image type is not allowed!");
+       messageApi.error(`The file "${file.name}" is not supported! Allowed types: ${allowedExtensions.join(', ')}.`);
+      return;
     }
-    if (typeof result === 'string') {
-      setPreview(result); // base64 image string
-      setImage(file);
-    }
-  };
-
-  reader.readAsDataURL(file);
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      let result: string | null = null;
+      if (typeof reader.result === 'string') {
+           result = reader.result;
+      }
+      if (typeof result === 'string') {
+         setPreview(prevPreviews => [...prevPreviews, result]);
+        setImage(prevImages => [...prevImages, file]); 
+      }
+    };
+  
+    reader.readAsDataURL(file);
+  });
 };
 
 const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -55,8 +59,8 @@ const onDrop = useCallback((acceptedFiles: File[]) => {
       const fileContent = reader.result;
       if (typeof fileContent === 'string') {
         console.log('File content (data URL):', fileContent);
-        setPreview(fileContent); // base64 string
-        setImage(file);
+          setPreview(prevPreviews => [...prevPreviews, fileContent]);
+          setImage(prevImages => [...prevImages, file]);
       }
     };
 
@@ -70,9 +74,6 @@ const onDrop = useCallback((acceptedFiles: File[]) => {
         {contextHolder}
             <Row className='display_flex'>
                 <Col className='fileConverter_banner display_flex' span={24}>
-                    {/* <div>
-                        <Image src={littleToolsBanner} alt='little tools landing page banner' className='fileConverter_banner_image' />
-                    </div> */}
                     <h1 className='file_converter_heading'>
                         CONVERT YOUR FILES FROM ONE FORMAT TO ANOTHER, ONLINE.
                     </h1>
@@ -82,18 +83,18 @@ const onDrop = useCallback((acceptedFiles: File[]) => {
                     md={{ span: 22 }}
                     lg={{ span: 16 }}
                     >
-                    {!image ?
+                    {image.length === 0 ? (
                         // To upload image show this
                         (
                             <DragDropArea onDrop={onDrop} handleImageChange={handleImageChange} />
                         )
 
-                        :
+                      ):(
                         // If you have image then show this
                         (
                             <ExtensionSelector image={image} setImage={setImage} preview={preview} />
                         )
-                    }
+                    )}
                 </Col>
             </Row>
         </div>
