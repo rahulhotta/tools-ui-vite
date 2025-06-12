@@ -1,7 +1,6 @@
 import './navBar.scss';
 import CommonCard from '../../Utils/CommonElements/Card/CommonCard';
 import { Link } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
 
 function NavBar() {
   return (
@@ -13,9 +12,6 @@ function NavBar() {
           </h4>
         </Link>
       </CommonCard>
-      <main>
-        <Outlet />
-      </main>
     </div>
   )
 }

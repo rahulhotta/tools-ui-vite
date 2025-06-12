@@ -9,7 +9,8 @@ import * as FaIcons from 'react-icons/fa';
 import * as MdIcons from 'react-icons/md';
 import * as AiIcons from 'react-icons/ai';
 import Landing_page_card from '../../Utils/CommonElements/landing_page_card/Landing_page_card';
-import FeaturesJson from '../../assets/Jsons/HomeFeatures.json'
+import FeaturesJson from '../../assets/Jsons/HomeFeatures.json';
+
 const LandingPage = () => {;
 
   interface childFeatureType {
@@ -93,7 +94,6 @@ const LandingPage = () => {;
           )
         })
       }
-
     </div>
   )
 }
