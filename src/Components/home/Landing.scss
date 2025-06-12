@@ -1,0 +1,56 @@
+@use '../../variables.scss' as vars;
+.landing_page_container {
+  background-image: url("../../assets/Images/cornered-stairs.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100vw;
+  // padding-top: 50px;
+  padding-bottom: 20px;
+  .landing_header_conatainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: vars.$secondary_color;
+    padding: 10px 1rem;
+    padding-top: 50px !important;
+    font-size: 1.3rem;
+  }
+  .landing_page_features{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .parent_card {
+    color: black;
+    // padding: ;
+    margin-top: 20px;
+  }
+  .child_folder{
+    padding: 20px;
+    .feature_name{
+      color: vars.$secondary_color;
+    }
+  }
+  .child_card_container{
+    display: flex;
+    flex-wrap: wrap;
+    .child_card{
+        margin: 10px 20px;
+        flex-wrap: wrap;
+    }
+  }
+}
+@media (max-width: 870px) {
+  .landing_header_conatainer{
+    font-size: 1.2rem !important;
+    padding-top: 10px !important;
+    text-align: center;
+  }
+    .child_card_container{
+        flex-direction: column;
+    }
+}

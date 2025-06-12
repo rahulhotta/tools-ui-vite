@@ -1,0 +1,26 @@
+@use '../../../variables.scss' as vars;
+
+.dropzone_container{
+    margin: 10px 0;
+}
+.file_converter_file_input_container{
+    // background-color: #E2E2E2;
+    // color: black;
+    padding: 5rem 10px;
+    border: 4px dashed rgb(187, 184, 184);
+    height: 350px;
+    .file_converter_col{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}
+
+.dropzone.active {
+    border-color: #4299e1;
+    background-color: #e6e6e6;
+    color:black;
+}

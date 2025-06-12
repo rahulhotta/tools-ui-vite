@@ -1,0 +1,36 @@
+@use '../../variables.scss' as vars;
+.url_shortener_page_container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  color: black;
+  padding-top: 40px;
+  .url_shortener_form_container {
+    padding: 10px;
+    width: clamp(300px, 90vw, 800px);
+  }
+}
+.url_shortener_form {
+  padding: 2rem !important;
+}
+.form_input{
+    border: 1px solid rgb(171, 171, 171);
+}
+.copy_container{
+    padding: 2rem;
+    display: flex;
+}
+.copy_input{
+    margin-right: 10px  !important;
+}
+.copy_input:disabled{
+    background-color: rgb(238, 238, 238);
+    color: rgb(101, 101, 101);
+}
+.url_shortener_header{
+    text-align: center;
+    color: vars.$secondary_color;
+}

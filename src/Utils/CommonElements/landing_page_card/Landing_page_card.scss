@@ -1,0 +1,59 @@
+@use '../../../variables.scss' as vars;
+.custom-card {
+  width: 16rem;
+  background-color: white;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.09);
+  padding: 2.25rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+
+  .card-badge {
+    width: 6rem;
+    height: 6rem;
+    // background-color: #7c3aed; // Tailwind's violet-500
+    background-color: vars.$secondary_color; 
+    border-radius: 9999px;
+    position: absolute;
+    top: -1.75rem;
+    right: -1.25rem;
+
+    .badge-text {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.2rem;
+      color: white;
+      font-size: 1.2rem;
+    }
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+    color: vars.$secondary_color;
+  }
+
+  .card-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: rgb(73, 73, 73);
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+    color: #71717a; // Tailwind's zinc-500
+    line-height: 1.5rem;
+  }
+}
+
+.custom-card:hover{
+  transform: translateY(-8px);
+}
+
+@media (max-width: 870px) {
+  .custom-card {
+    width: 100%;
+  }
+}
