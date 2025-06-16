@@ -3,6 +3,7 @@ import ImageConverter from "./Components/ImageConverter/ImageConverter";
 import UrlShortener from "./Components/url-shortener/url-shortener";
 import LandingPage from "./Components/home/Landing";
 import Layout from "./layout";
+import JsonEditor from "./Components/JSONeditor/JsonEditor";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: 'links/url-shortener',
                 element: <UrlShortener />,
+            },
+            {
+                path: 'jsons/json-editor',
+                element: <JsonEditor />,
             },
             // Add more routes here
         ]

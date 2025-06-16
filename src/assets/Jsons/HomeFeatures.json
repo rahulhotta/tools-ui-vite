@@ -36,6 +36,15 @@
             "description": "Shorten your url.",
             "badge": true,
             "badgeText": "New"
+          },
+          {
+            "childId": 2,
+            "name": "JSON Editor",
+            "route": "jsons/json-editor",
+            "icon": "VscJson",
+            "description": "Modify Your Jsons professionaly.",
+            "badge": true,
+            "badgeText": "New"
           }
         ]
       }

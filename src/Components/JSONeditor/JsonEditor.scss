@@ -1,0 +1,70 @@
+.app-layout {
+  min-height: 100vh;
+  background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
+    background-size: cover;
+  padding-top: 60px;
+  .app-header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 24px;
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+      .app-title {
+        color: #1890ff;
+        margin: 0;
+      }
+    }
+  }
+  
+  .app-content {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    
+    .json-row {
+      height: calc(100vh - 112px);
+      
+      .ant-col {
+        height: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    .app-header {
+      padding: 0 16px;
+      
+      .header-content {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 0;
+        
+        .app-title {
+          font-size: 20px;
+        }
+      }
+    }
+    
+    .app-content {
+      padding: 16px;
+      
+      .json-row {
+        height: auto;
+        
+        .ant-col {
+          height: 60vh;
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ import * as PiIcons from 'react-icons/pi';
 import * as FaIcons from 'react-icons/fa';
 import * as MdIcons from 'react-icons/md';
 import * as AiIcons from 'react-icons/ai';
+import * as VsIcons from 'react-icons/vsc';
 import Landing_page_card from '../../Utils/CommonElements/landing_page_card/Landing_page_card';
 import FeaturesJson from '../../assets/Jsons/HomeFeatures.json';
 
@@ -40,6 +41,7 @@ const LandingPage = () => {;
     Md: MdIcons,
     Ai: AiIcons,
     Pi: PiIcons,
+    Vs: VsIcons,
   };
   const renderIcon = (iconName:string) => {
     // Extract prefix (first two characters) to determine the icon library
