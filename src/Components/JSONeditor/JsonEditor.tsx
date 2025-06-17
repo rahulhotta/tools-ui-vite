@@ -1,11 +1,9 @@
 import './JsonEditor.scss';
 import { useState } from 'react'
-import { Layout, Row, Col, Button, Space, Typography, message } from 'antd'
-import { SwapOutlined, ClearOutlined } from '@ant-design/icons'
+import { Layout, Row, Col, message } from 'antd'
 import JsonContainer from './JsonContainer/JsonContainer'
 
-const { Header, Content } = Layout
-const { Title } = Typography
+const {  Content } = Layout
 
 const defaultJson1 = {
     "user": {
@@ -47,19 +45,19 @@ const JsonEditor = () => {
     const [json1, setJson1] = useState(JSON.stringify(defaultJson1, null, 2))
     const [json2, setJson2] = useState(JSON.stringify(defaultJson2, null, 2));
 
-    const handleSwap = () => {
-        const temp = json1;
-        setJson1(json2)
-        setJson2(temp)
-        message.success('JSON data swapped successfully!')
-    }
+    // const handleSwap = () => {
+    //     const temp = json1;
+    //     setJson1(json2)
+    //     setJson2(temp)
+    //     message.success('JSON data swapped successfully!')
+    // }
 
     const handleClear = (jsonNumber: string) => {
         if (jsonNumber === 'container1') {
-            setJson1('')
+            setJson1('{}')
             message.success('JSON cleared!')
         } else {
-            setJson2('')
+            setJson2('{}')
             message.success('JSON cleared!')
         }
     }

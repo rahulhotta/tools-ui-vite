@@ -1,5 +1,5 @@
 import  { useState, useMemo } from 'react'
-import { Card, Switch, Space, Typography, Alert, Button, message } from 'antd'
+import {  Switch, Space, Typography, Alert, Button, message } from 'antd'
 import { EyeOutlined, EditOutlined, CopyOutlined, DownloadOutlined ,DeleteOutlined} from '@ant-design/icons'
 import './JsonContainer.scss';
 import JsonTreeView from '../JsonTreeView/JsonTreeView';
@@ -79,35 +79,33 @@ const JsonContainer : React.FC<jsonContainerPropType> = ({ title, value, onChang
          <div className="container-header">
           <Title level={4} className="container-title">{title}</Title>
           <Space>
-            <Button 
-              size="small" 
-              icon={<CopyOutlined />} 
-              onClick={handleCopy}
-              title="Copy JSON"
-            />
-            <Button 
-              size="small" 
-              icon={<DownloadOutlined />} 
-              onClick={handleDownload}
-              title="Download JSON"
-            />
-            <Button 
-              size="small" 
-              icon={<DeleteOutlined /> }
-              onClick={() => {handleClear(containerKey)}}
-              title="Download JSON"
-            />
+
+            <Button color="primary" size="small" variant="outlined"  onClick={handleCopy}
+              title="Copy JSON">
+                <CopyOutlined />
+            </Button>
+
+            <Button size="small" color="primary" variant="outlined" onClick={handleDownload}
+              title="Download JSON">
+                <DownloadOutlined />
+            </Button>
+
+            <Button size="small" color="danger" variant="outlined" onClick={() => {handleClear(containerKey)}}
+              title="Download JSON">
+                <DeleteOutlined />
+            </Button>
             <Button 
               size="small" 
               onClick={formatJson}
               disabled={!isValid}
               title="Format JSON"
+              type='primary'
             >
               Format
             </Button>
           </Space>
         </div>
-        <Space align="center">
+        <Space align="center" className='edit_toggle_container'> 
           <EyeOutlined className={viewMode === 'tree' ? 'active-icon' : ''} />
           <Switch
             checked={viewMode === 'raw'}
@@ -150,7 +148,7 @@ const JsonContainer : React.FC<jsonContainerPropType> = ({ title, value, onChang
 
         <CodeMirror
             value={value}
-            height="400px"
+            height="100%"
             extensions={[json()]}
             onChange={(val: string) => onChange(val)}
             theme="light"
