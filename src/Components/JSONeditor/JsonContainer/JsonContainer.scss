@@ -28,6 +28,7 @@
   .error-alert {
     margin-bottom: 16px;
   }
+  
   .edit_toggle_container {
     margin: 10px;
   }
@@ -36,6 +37,7 @@
     height: 100%;
     overflow: hidden;
     max-height: 500px;
+    
     .tree-view-container {
       height: 100%;
       overflow: auto;
@@ -75,10 +77,53 @@
 .code-editor-wrapper {
   position: relative;
   border-radius: 4px;
-}
-
-.code-editor-wrapper.compare-mode {
-  border: 2px solid #e8f4fd;
+  height: 100%;
+  
+  // Enhanced styling for compare mode
+  &.compare-mode {
+    border: 2px solid #e8f4fd;
+    background: #fafafa;
+    
+    .cm-editor {
+      background: transparent;
+    }
+  }
+  
+  // CodeMirror container styling
+  .cm-editor {
+    height: 100%;
+    font-size: 13px;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  }
+  
+  .cm-content {
+    padding: 8px;
+  }
+  
+  .cm-focused {
+    outline: none;
+  }
+  
+  // Diff highlighting styles - these will be applied by CodeMirror decorations
+  .cm-line {
+    &.diff-added {
+      background-color: #f6ffed !important;
+      border-left: 3px solid #52c41a;
+      padding-left: 4px;
+    }
+    
+    &.diff-removed {
+      background-color: #fff2f0 !important;
+      border-left: 3px solid #ff4d4f;
+      padding-left: 4px;
+    }
+    
+    &.diff-changed {
+      background-color: #fff7e6 !important;
+      border-left: 3px solid #fa8c16;
+      padding-left: 4px;
+    }
+  }
 }
 
 .diff-indicator {
@@ -92,6 +137,8 @@
   color: #1890ff;
   pointer-events: none;
   z-index: 10;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(24, 144, 255, 0.2);
 }
 
 .diff-count {

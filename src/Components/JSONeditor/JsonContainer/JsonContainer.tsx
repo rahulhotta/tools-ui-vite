@@ -1,13 +1,93 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Switch, Space, Typography, Alert, Button, message } from 'antd'
 import { EyeOutlined, EditOutlined, CopyOutlined, DownloadOutlined, DeleteOutlined } from '@ant-design/icons'
 import './JsonContainer.scss';
-import JsonTreeView from '../JsonTreeView/JsonTreeView';
 import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
+import { EditorView, Decoration } from '@codemirror/view';
+import { StateField, StateEffect } from '@codemirror/state';
 import CommonCard from '../../../Utils/CommonElements/Card/CommonCard';
+import JsonTreeView from '../JsonTreeView/JsonTreeView';
 
 const { Title } = Typography;
+
+// Define decoration effects for diff highlighting
+const addLineEffect = StateEffect.define();
+const removeLineEffect = StateEffect.define();
+const changeLineEffect = StateEffect.define();
+const clearDecorations = StateEffect.define();
+
+// Create decorations for different types of changes
+const addedDecoration = Decoration.line({
+  attributes: { style: "background-color: #f6ffed; border-left: 3px solid #52c41a; padding-left: 4px;" }
+});
+
+const removedDecoration = Decoration.line({
+  attributes: { style: "background-color: #fff2f0; border-left: 3px solid #ff4d4f; padding-left: 4px;" }
+});
+
+const changedDecoration = Decoration.line({
+  attributes: { style: "background-color: #fff7e6; border-left: 3px solid #fa8c16; padding-left: 4px;" }
+});
+
+// State field to manage decorations
+const decorationsField = StateField.define({
+  create() {
+    return Decoration.none;
+  },
+  update(decorations, tr) {
+    decorations = decorations.map(tr.changes);
+    
+    for (let e of tr.effects) {
+      if (e.is(addLineEffect)) {
+        decorations = decorations.update({
+          add: [addedDecoration.range(e.value)]
+        });
+      } else if (e.is(removeLineEffect)) {
+        decorations = decorations.update({
+          add: [removedDecoration.range(e.value)]
+        });
+      } else if (e.is(changeLineEffect)) {
+        decorations = decorations.update({
+          add: [changedDecoration.range(e.value)]
+        });
+      } else if (e.is(clearDecorations)) {
+        decorations = Decoration.none;
+      }
+    }
+    
+    return decorations;
+  },
+  provide: f => EditorView.decorations.from(f)
+});
+
+// Function to find line numbers for paths in JSON string
+const findLineForPath = (jsonString, path) => {
+  if (!path) return [];
+  
+  const lines = jsonString.split('\n');
+  const pathParts = path.split(/[.\[\]]/).filter(p => p !== '');
+  const foundLines = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Check if any part of the path appears in this line
+    for (const part of pathParts) {
+      if (line.includes(`"${part}"`) || 
+          (line.includes(part) && /^\d+$/.test(part)) ||
+          line.includes(`"${part}"`)) {
+        foundLines.push(i);
+        break;
+      }
+    }
+  }
+  
+  return foundLines;
+};
+
+// Enhanced JsonTreeView with diff highlighting
+
 
 interface jsonContainerPropType {
     title: string | null,
@@ -33,6 +113,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
     const [viewMode, setViewMode] = useState('tree')
     const [isValid, setIsValid] = useState(true)
     const [error, setError] = useState('')
+    const [editorView, setEditorView] = useState(null)
 
     const parsedJson = useMemo(() => {
         try {
@@ -50,6 +131,40 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
         }
     }, [value])
 
+    // Apply decorations when differences change
+    useEffect(() => {
+        if (editorView && compareMode && differences.length > 0) {
+            const effects = [clearDecorations.of()];
+            
+            differences.forEach(diff => {
+                const lines = findLineForPath(value, diff.path);
+                
+                lines.forEach(lineNum => {
+                    try {
+                        const line = editorView.state.doc.line(lineNum + 1);
+                        
+                        if (diff.type === 'added' && side === 'right') {
+                            effects.push(addLineEffect.of(line.from));
+                        } else if (diff.type === 'removed' && side === 'left') {
+                            effects.push(removeLineEffect.of(line.from));
+                        } else if (diff.type === 'value_change' || diff.type === 'type_change') {
+                            effects.push(changeLineEffect.of(line.from));
+                        }
+                    } catch (e) {
+                        // Line number might be out of bounds, skip
+                        console.warn('Line number out of bounds:', lineNum + 1);
+                    }
+                });
+            });
+            
+            if (effects.length > 1) {
+                editorView.dispatch({ effects });
+            }
+        } else if (editorView) {
+            editorView.dispatch({ effects: [clearDecorations.of()] });
+        }
+    }, [editorView, compareMode, differences, value, side]);
+
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(value)
@@ -61,27 +176,6 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
         }
     }
 
-    const handleDownload = () => {
-        const blob = new Blob([value], { type: 'application/json' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `${containerKey}.json`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-        message.success('JSON downloaded!')
-    }
-
-    const formatJson = () => {
-        if (isValid && parsedJson) {
-            onChange(JSON.stringify(parsedJson, null, 2))
-            message.success('JSON formatted!')
-        }
-    }
-
-    // Enhanced tree view with diff highlighting
     const EnhancedJsonTreeView = ({ data }: { data: any }) => {
         if (!compareMode || !differences.length) {
             return <JsonTreeView data={data} />;
@@ -106,12 +200,39 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                         fontSize: '12px',
                         color: '#666'
                     }}>
-                        {differences.length} difference(s) found - Switch to Raw mode for detailed highlighting
+                        {differences.length} difference(s) found - Switch to Edit mode for detailed highlighting
                     </div>
                 )}
             </div>
         );
     };
+
+    const handleDownload = () => {
+        const blob = new Blob([value], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${containerKey}.json`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        message.success('JSON downloaded!')
+    }
+
+    const formatJson = () => {
+        if (isValid && parsedJson) {
+            onChange(JSON.stringify(parsedJson, null, 2))
+            message.success('JSON formatted!')
+        }
+    }
+
+    // Get relevant differences for this side
+    const relevantDifferences = differences.filter(d => 
+        (d.type === 'added' && side === 'right') ||
+        (d.type === 'removed' && side === 'left') ||
+        (d.type === 'value_change' || d.type === 'type_change')
+    );
 
     return (
         <div style={{ height: "100%" }}>
@@ -121,18 +242,14 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                         <div className="container-header">
                             <Title level={4} className="container-title">
                                 {title}
-                                {compareMode && differences.length > 0 && (
+                                {compareMode && relevantDifferences.length > 0 && (
                                     <span style={{ 
                                         marginLeft: '8px', 
                                         fontSize: '12px', 
                                         color: '#1890ff',
                                         fontWeight: 'normal'
                                     }}>
-                                        ({differences.filter(d => 
-                                            (d.type === 'added' && side === 'right') ||
-                                            (d.type === 'removed' && side === 'left') ||
-                                            (d.type === 'value_change' || d.type === 'type_change')
-                                        ).length} changes)
+                                        ({relevantDifferences.length} changes)
                                     </span>
                                 )}
                             </Title>
@@ -219,25 +336,20 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                                 <CodeMirror
                                     value={value}
                                     height="100%"
-                                    extensions={[json()]}
+                                    extensions={[json(), decorationsField]}
                                     onChange={(val: string) => onChange(val)}
                                     theme="light"
+                                    onCreateEditor={(view) => setEditorView(view)}
                                 />
                                 
                                 {/* Show comparison status */}
-                                {compareMode && differences.length > 0 && (
+                                {compareMode && relevantDifferences.length > 0 && (
                                     <div className="diff-indicator">
                                         <span className="diff-count">
-                                            {differences.filter(d => 
-                                                (d.type === 'added' && side === 'right') ||
-                                                (d.type === 'removed' && side === 'left') ||
-                                                (d.type === 'value_change' || d.type === 'type_change')
-                                            ).length} change(s) highlighted
+                                            {relevantDifferences.length} change(s) highlighted
                                         </span>
                                     </div>
                                 )}
-                                
-                                
                             </div>
                         )}
                     </div>
