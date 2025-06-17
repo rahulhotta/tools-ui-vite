@@ -4,6 +4,8 @@ import UrlShortener from "./Components/url-shortener/url-shortener";
 import LandingPage from "./Components/home/Landing";
 import Layout from "./layout";
 import JsonEditor from "./Components/JSONeditor/JsonEditor";
+import JwtDecoder from "./Components/JwtDecoder/JwtDecoder"
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: 'jsons/json-editor',
                 element: <JsonEditor />,
+            },
+            {
+                path: 'jwt/jwt-decoder',
+                element: <JwtDecoder />,
             },
             // Add more routes here
         ]
