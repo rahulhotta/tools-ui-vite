@@ -45,6 +45,15 @@
             "description": "Modify Your Jsons professionaly.",
             "badge": true,
             "badgeText": "New"
+          },
+          {
+            "childId": 3,
+            "name": "JWT Decoder",
+            "route": "jwt/jwt-decoder",
+            "icon": "MdOutlineGeneratingTokens",
+            "description": "Decode and verify JSON Web Tokens",
+            "badge": true,
+            "badgeText": "New"
           }
         ]
       }
