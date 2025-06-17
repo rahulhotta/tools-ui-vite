@@ -16,7 +16,7 @@ const Landing_page_card : React.FC<landingPageCardProps> =  ({icon, name, descri
     <div className="custom-card">
     {
         badge 
-        &&  
+        &&
         <div className="card-badge">
             <p className="badge-text">{badgeText}</p>
         </div>
@@ -25,7 +25,7 @@ const Landing_page_card : React.FC<landingPageCardProps> =  ({icon, name, descri
         {icon}
     </div>
     <h1 className="card-title">{name}</h1>
-    <p className="card-description">
+    <p className="card-description truncate-3-lines">
       {description}
     </p>
   </div>

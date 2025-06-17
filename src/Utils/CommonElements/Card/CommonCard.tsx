@@ -3,7 +3,8 @@ import './CommonCard.scss'
 interface proprsType {
   children: any,
   height?:string,
-  width?:string
+  width?:string,
+  className?:string
 }
 
 const CommonCard : React.FC<proprsType> = ({children, height, width}) => {

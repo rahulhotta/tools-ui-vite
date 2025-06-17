@@ -1,0 +1,88 @@
+.json-tree-view {
+  height: 100%;
+  
+  .json-tree {
+    .tree-node-title {
+      font-size: 13px;
+      
+      .json-key {
+        color: #d73a49;
+        font-weight: 600;
+      }
+      
+      .json-index {
+        color: #6f42c1;
+        font-weight: 600;
+      }
+      
+      .json-string {
+        color: #032f62;
+        background: rgba(3, 47, 98, 0.05);
+      }
+      
+      .json-number {
+        color: #005cc5;
+        font-weight: 500;
+      }
+      
+      .json-boolean {
+        font-weight: 500;
+        
+        &.true {
+          color: #28a745;
+        }
+        
+        &.false {
+          color: #dc3545;
+        }
+      }
+      
+      .json-null {
+        color: #6a737d;
+        font-style: italic;
+      }
+      
+      .type-tag {
+        font-size: 11px;
+        border-radius: 12px;
+        margin-left: 8px;
+      }
+    }
+    
+    .ant-tree-node-content-wrapper:hover {
+      background-color: #e6f7ff;
+    }
+    
+    .ant-tree-node-selected {
+      background-color: #bae7ff !important;
+    }
+    
+    .tree-node-string .anticon {
+      color: #1890ff;
+    }
+    
+    .tree-node-number .anticon {
+      color: #52c41a;
+    }
+    
+    .tree-node-boolean .anticon {
+      color: #fa8c16;
+    }
+    
+    .tree-node-null .anticon {
+      color: #8c8c8c;
+    }
+    
+    .tree-node-array .anticon {
+      color: #722ed1;
+    }
+    
+    .tree-node-object .anticon {
+      color: #13c2c2;
+    }
+  }
+}
+
+.line-highlight {
+  background-color: rgba(255, 255, 0, 0.3);
+}
