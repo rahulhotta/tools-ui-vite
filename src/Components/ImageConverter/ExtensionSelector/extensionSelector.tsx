@@ -6,12 +6,28 @@ import { Select } from 'antd';
 import { Form } from 'antd';
 import CommonCard from '../../../Utils/CommonElements/Card/CommonCard';
 import ConvertableExtensions from '../../../assets/Jsons/ConvertableExtensions.json'
+import { Image } from 'antd';
+import { AiFillEye } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 interface ExtensionSelectorProps {
     image: File[];
     preview: string[];
     setImage: (imgs: File[]) => void;
 }
+
+
 const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, preview }) => {
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+
+    const handlePreview = (index: number) => {
+        if (preview && preview[index]) {
+            setPreviewImage(preview[index]);
+            setPreviewOpen(true);
+        } else {
+            console.warn(`No preview available for index ${index}`);
+        }
+    };
 
     const convertableExtensions = ConvertableExtensions
 
@@ -64,6 +80,13 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
         return `${text.substring(0, sideLength)}...${text.substring(text.length - sideLength)}`;
     };
 
+    const deleteImage = (index: number) => {
+        console.log("before", image[index]);
+        const updatedImages = image.filter((image, i) => i !== index);
+        setImage(updatedImages);
+        console.log("after", updatedImages);
+    };
+
     return (
         <div>
             <Form onFinish={convertToExtension} name="basic">
@@ -90,29 +113,44 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
                     <Col span={8} xs={{ span: 12 }} sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 8 }}>
                         <Button type="submit">Convert</Button>
                     </Col>
-                    <Col span={8} xs={{ span: 12 }} sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 8 }} className='convert_new_button_container'>
+                    <Col span={8} xs={{ span: 8 }} sm={{ span: 8 }} md={{ span: 8 }} lg={{ span: 8 }} className='convert_new_button_container'>
                         <Button onClick={() => { setImage([]) }}>Convert New File</Button>
                     </Col>
                 </Row>
-                {image.map((image, index) => (
-                    <CommonCard key={index}>
-                        <Row className='extension_selector_div' justify="start">
-
-                            <Col span={18} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 8 }} data-testid={`column-antd-${index}`}>
-                                <div className='extension_selector_image_name'>
-                                    {image && truncateMiddle(image?.name)}
-                                </div>
-                                <div className='extension_selector_image_size'>
-                                    {fileSizeInMB[index]} MB
-                                </div>
-                            </Col>
-                        </Row>
-                    </CommonCard>
-                ))}
-                {/* <Row className='extension_selector_new_convert_button_container'>
-                    <Button onClick={() => { setImage([]) }}>Convert New File</Button>
-                </Row> */}
             </Form>
+            {image.map((image, index) => (
+                <CommonCard key={index}>
+                    <Row className='extension_selector_div'>
+
+                        <Col span={22} xs={{ span: 20 }} sm={{ span: 22 }} md={{ span: 22 }} lg={{ span: 22 }} data-testid={`column-antd-${index}`}>
+                            <div className='extension_selector_image_name'>
+                                {image && truncateMiddle(image?.name)}
+                            </div>
+                            <div className='extension_selector_image_size'>
+                                {fileSizeInMB[index]} MB
+                            </div>
+                        </Col>
+
+                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "23px" }}>
+                            <AiFillEye onClick={() => handlePreview(index)} />
+                        </Col>
+                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "17px", color: "red", paddingTop: "3px" }}>
+                            <ImCross onClick={() => deleteImage(index)} />
+                        </Col>
+                    </Row>
+                </CommonCard>
+            ))}
+            {previewImage && (
+                <Image
+                    wrapperStyle={{ display: 'none' }}
+                    preview={{
+                        visible: previewOpen,
+                        onVisibleChange: (visible) => setPreviewOpen(visible),
+                        afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                    }}
+                    src={previewImage}
+                />
+            )}
         </div>
     )
 }
