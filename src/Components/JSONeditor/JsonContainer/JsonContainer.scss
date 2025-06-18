@@ -1,5 +1,5 @@
 .json-container {
-  height: 90%;
+  height: calc(100% - 60px);
   padding: 20px;
   border-radius: 10px;
 
@@ -36,7 +36,6 @@
   .content-container {
     height: 100%;
     overflow: hidden;
-    max-height: 500px;
     
     .tree-view-container {
       height: 100%;
@@ -105,25 +104,25 @@
   }
   
   // Diff highlighting styles - these will be applied by CodeMirror decorations
-  .cm-line {
-    &.diff-added {
-      background-color: #f6ffed !important;
-      border-left: 3px solid #52c41a;
-      padding-left: 4px;
-    }
+//   .cm-line {
+//     &.diff-added {
+//       background-color: #f6ffed !important;
+//       border-left: 3px solid #52c41a;
+//       padding-left: 4px;
+//     }
     
-    &.diff-removed {
-      background-color: #fff2f0 !important;
-      border-left: 3px solid #ff4d4f;
-      padding-left: 4px;
-    }
+//     &.diff-removed {
+//       background-color: #fff2f0 !important;
+//       border-left: 3px solid #ff4d4f;
+//       padding-left: 4px;
+//     }
     
-    &.diff-changed {
-      background-color: #fff7e6 !important;
-      border-left: 3px solid #fa8c16;
-      padding-left: 4px;
-    }
-  }
+//     &.diff-changed {
+//       background-color: #fff7e6 !important;
+//       border-left: 3px solid #fa8c16;
+//       padding-left: 4px;
+//     }
+//   }
 }
 
 .diff-indicator {

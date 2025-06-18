@@ -1,10 +1,9 @@
 import './JsonEditor.scss';
 import { useState, useEffect } from 'react'
-import { Layout, Row, Col, message, Switch, Space, Button, Typography, Alert } from 'antd'
+import {  Row, Col, message, Switch, Space, Button, Typography, Alert } from 'antd'
 import { SwapOutlined } from '@ant-design/icons'
 import JsonContainer from './JsonContainer/JsonContainer'
 
-const { Content } = Layout
 const { Title } = Typography
 
 // Utility function to deeply compare JSON objects and find differences
@@ -188,8 +187,8 @@ const JsonEditor = () => {
 
     return (
         <div>
-            <Layout className="app-layout">
-                <Content className="app-content">
+            <div className="app-layout">
+                <div className="app-content">
                     {/* Compare Controls */}
                     <div className="compare-controls" style={{ marginBottom: '16px', textAlign: 'center' }}>
                         <Space size="large">
@@ -216,7 +215,7 @@ const JsonEditor = () => {
                         </Space>
 
                         {/* Differences Summary */}
-                        {compareMode && differences.length > 0 && (
+                        {/* {compareMode && differences.length > 0 && (
                             <Alert
                                 message={`Found ${differences.length} difference(s)`}
                                 description={
@@ -242,9 +241,9 @@ const JsonEditor = () => {
                                 showIcon
                                 style={{ marginTop: '12px', textAlign: 'left' }}
                             />
-                        )}
+                        )} */}
 
-                        {compareMode && differences.length === 0 && parsedJson1 && parsedJson2 && (
+                        {/* {compareMode && differences.length === 0 && parsedJson1 && parsedJson2 && (
                             <Alert
                                 message="No differences found"
                                 description="Both JSON documents are identical"
@@ -252,7 +251,7 @@ const JsonEditor = () => {
                                 showIcon
                                 style={{ marginTop: '12px' }}
                             />
-                        )}
+                        )} */}
 
                         {/* Legend */}
                         {compareMode && (
@@ -265,7 +264,7 @@ const JsonEditor = () => {
                                             backgroundColor: '#f6ffed', 
                                             borderLeft: '3px solid #52c41a' 
                                         }}></div>
-                                        <span style={{ fontSize: '12px' }}>Added</span>
+                                        <span style={{ fontSize: '12px' }} className='legend_text'>Added</span>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <div style={{ 
@@ -274,7 +273,7 @@ const JsonEditor = () => {
                                             backgroundColor: '#fff2f0', 
                                             borderLeft: '3px solid #ff4d4f' 
                                         }}></div>
-                                        <span style={{ fontSize: '12px' }}>Removed</span>
+                                        <span style={{ fontSize: '12px' }} className='legend_text'>Removed</span>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <div style={{ 
@@ -283,7 +282,7 @@ const JsonEditor = () => {
                                             backgroundColor: '#fff7e6', 
                                             borderLeft: '3px solid #fa8c16' 
                                         }}></div>
-                                        <span style={{ fontSize: '12px' }}>Modified</span>
+                                        <span style={{ fontSize: '12px' }} className='legend_text'>Modified</span>
                                     </div>
                                 </Space>
                             </div>
@@ -316,8 +315,8 @@ const JsonEditor = () => {
                             />
                         </Col>
                     </Row>
-                </Content>
-            </Layout>
+                </div>
+            </div>
         </div>
     )
 }
