@@ -1,3 +1,4 @@
+@use '../../variables.scss' as vars;
 .app-layout {
   min-height: 100vh;
   background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
@@ -29,7 +30,7 @@
     width: 100%;
     
     .json-row {
-      height: calc(100vh - 112px);
+      height: calc(100vh - 200px);
       
       .ant-col {
         height: 100%;
@@ -37,7 +38,10 @@
     }
   }
 }
-
+.legend_text{
+    color: vars.$secondary_color;
+    font-weight: 500;
+}
 @media (max-width: 768px) {
   .app-layout {
     .app-header {
