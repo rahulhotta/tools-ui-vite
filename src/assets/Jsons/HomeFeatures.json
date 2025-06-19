@@ -26,18 +26,9 @@
       },
       {
         "groupId": 2,
-        "name": "Other Tools",
-        "children": [
-          {
-            "childId": 1,
-            "name": "URL Shortener",
-            "route": "links/url-shortener",
-            "icon": "LuLink",
-            "description": "Shorten your url.",
-            "badge": true,
-            "badgeText": "New"
-          },
-          {
+        "name": "Dev Tools",
+        "children" : [
+           {
             "childId": 2,
             "name": "JSON Editor",
             "route": "jsons/json-editor",
@@ -54,6 +45,21 @@
             "description": "Decode and verify JSON Web Tokens",
             "badge": true,
             "badgeText": "New"
+          }
+        ]
+      },
+      {
+        "groupId": 3,
+        "name": "Other Tools",
+        "children": [
+          {
+            "childId": 1,
+            "name": "URL Shortener",
+            "route": "links/url-shortener",
+            "icon": "LuLink",
+            "description": "Shorten your url.",
+            "badge": false,
+            "badgeText": null
           }
         ]
       }

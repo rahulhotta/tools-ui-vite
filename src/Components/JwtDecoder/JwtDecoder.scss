@@ -1,5 +1,52 @@
+@use '../../variables.scss' as vars;
+
 .page-style {
-    padding: 50px;
-    background-image: url('../../assets/Images/cornered-stairs.svg'); 
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    .page-container{
+        max-width: 1200px;
+        margin: '0 auto';
+        padding-top: 60px;
+        .jwt_page_title{
+            text-align: center;
+            margin-bottom: 32px;
+            color: vars.$secondary_color;
+        }
+        .encoded_jwt_header{
+            background-color: #6363ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+        .encoded_jwt_container{
+            padding: 20px;
+        }
+        .decoded_jwt_header{
+            background-color: #60d360;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+        .decded_jwt_container{
+            padding: 20px;
+        }
+        .about_jwt_header{
+            background-color: white;
+            color: vars.$secondary_color;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+        .about_jwt_container{
+            padding: 20px;
+        }
+    }
 }

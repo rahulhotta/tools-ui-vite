@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Input, Typography, Row, Col, Alert, Divider } from 'antd';
 import CommonCard from '../../Utils/CommonElements/Card/CommonCard'
-
+import './JwtDecoder.scss'
+import { FaCommentMedical } from 'react-icons/fa';
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 
@@ -157,8 +158,8 @@ const JWTDecoder = () => {
   return (
 
     <div className='page-style'>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <div className='page-container'>
+        <Title level={2} className='jwt_page_title'>
           JWT Decoder
         </Title>
         
@@ -166,11 +167,17 @@ const JWTDecoder = () => {
           {/* Encoded JWT Input Card */}
           <Col xs={24} lg={12}>
              <CommonCard> 
-            <Card 
+            {/* <Card 
               title={decodedJWT.isPayloadOnly ? "Encoded JWT Payload" : "Encoded JWT"}
               style={{ height: '100%' }}
               headStyle={{ backgroundColor: '#1890ff', color: 'white' }}
-            >
+            > */}
+              <div className='encoded_jwt_header'>
+                <h2 >
+                  Encoded JWT
+                </h2>
+              </div>
+            <div className='encoded_jwt_container'>
               <TextArea
                 placeholder="Paste your JWT token, payload, or double-encoded data here..."
                 value={encodedJWT}
@@ -178,24 +185,29 @@ const JWTDecoder = () => {
                 rows={8}
                 style={{ fontFamily: 'monospace' }}
               />
-              <Paragraph style={{ marginTop: '12px', fontSize: '12px', color: '#666' }}>
+              <Paragraph style={{ marginTop: '12px', fontSize: '12px', color: 'rgb(73 73 73)' }}>
                 Supports multiple formats:
                 <br />• Complete JWT token (header.payload.signature)
                 <br />• Just the payload part (Base64URL encoded JSON)
                 <br />• Double-encoded data (Base64 containing JWT or payload)
                 <br />• API responses with JWT in data/token fields
               </Paragraph>
-            </Card>
+            </div>
+            {/* </Card> */}
             </CommonCard>
           </Col>
 
           {/* Decoded JWT Output Card */}
           <Col xs={24} lg={12}>
-            <Card 
-              title="Decoded JWT" 
-              style={{ height: '100%' }}
-              headStyle={{ backgroundColor: '#52c41a', color: 'white' }}
-            >
+          <CommonCard>
+
+            <div className='decoded_jwt_header'>
+                <h2 >
+                  Decoded JWT
+                </h2>
+              </div>
+            <div className='decded_jwt_container'>
+
               {decodedJWT.error ? (
                 <Alert 
                   message="Decoding Error" 
@@ -268,22 +280,35 @@ const JWTDecoder = () => {
                   )}
                 </div>
               )}
-            </Card>
+            </div>
+            </CommonCard>
           </Col>
         </Row>
 
         {/* Information Section */}
-        <Card style={{ marginTop: '24px' }} title="About JWT">
-          <Paragraph>
-            JSON Web Tokens (JWT) are an open standard (RFC 7519) that defines a compact and self-contained way 
-            for securely transmitting information between parties as a JSON object. A JWT consists of three parts:
-          </Paragraph>
-          <ul>
-            <li><Text strong style={{ color: '#1890ff' }}>Header:</Text> Contains metadata about the token, typically the signing algorithm and token type.</li>
-            <li><Text strong style={{ color: '#52c41a' }}>Payload:</Text> Contains the claims (statements about an entity and additional data).</li>
-            <li><Text strong style={{ color: '#fa8c16' }}>Signature:</Text> Used to verify the sender and ensure the message wasn't changed along the way.</li>
-          </ul>
-        </Card>
+        <div style={{marginTop: '20px'}}>
+
+          <CommonCard >
+          {/* <Card style={{ marginTop: '24px' }} title="About JWT"> */}
+          <div className="about_jwt_header">
+            <h2>
+              About JWT
+            </h2>
+          </div>
+          <div className='about_jwt_container'>
+            <Paragraph>
+              JSON Web Tokens (JWT) are an open standard (RFC 7519) that defines a compact and self-contained way 
+              for securely transmitting information between parties as a JSON object. A JWT consists of three parts:
+            </Paragraph>
+            <ul>
+              <li><Text strong style={{ color: '#1890ff' }}>Header:</Text> Contains metadata about the token, typically the signing algorithm and token type.</li>
+              <li><Text strong style={{ color: '#52c41a' }}>Payload:</Text> Contains the claims (statements about an entity and additional data).</li>
+              <li><Text strong style={{ color: '#fa8c16' }}>Signature:</Text> Used to verify the sender and ensure the message wasn't changed along the way.</li>
+            </ul>
+          </div>
+          {/* </Card> */}
+          </CommonCard>
+        </div>
       </div>
     </div>
 
