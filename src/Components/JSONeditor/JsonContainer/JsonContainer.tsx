@@ -17,6 +17,22 @@ const removeLineEffect = StateEffect.define();
 const changeLineEffect = StateEffect.define();
 const clearDecorations = StateEffect.define();
 
+interface Diff {
+    type: 'added' | 'removed' | 'value_change' | 'type_change';
+    path: string;
+}
+
+type JsonValue = 
+  | string 
+  | number 
+  | boolean 
+  | null 
+  | JsonValue[] 
+  | { [key: string]: JsonValue };
+interface EnhancedJsonTreeViewProps {
+  data: JsonValue;
+}
+
 // Create decorations for different types of changes
 const addedDecoration = Decoration.line({
   attributes: { style: "background-color: #f6ffed; border-left: 3px solid #52c41a; padding-left: 4px;" }
@@ -100,7 +116,7 @@ interface jsonContainerPropType {
     containerKey: string,
     handleClear: (containerKey: string) => void,
     compareMode?: boolean,
-    differences?: unknown[],
+    differences?: Diff[],
     side?: 'left' | 'right'
 }
 
@@ -138,7 +154,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
     // Apply decorations when differences change
     useEffect(() => {
         if (editorView && compareMode && differences.length > 0) {
-            const effects = [clearDecorations.of()];
+            const effects = [clearDecorations.of(null)];
             
             differences.forEach(diff => {
                 const lines = findLineForPath(value, diff.path);
@@ -156,7 +172,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                         }
                     } catch (e) {
                         // Line number might be out of bounds, skip
-                        console.warn('Line number out of bounds:', lineNum + 1);
+                        console.warn('Line number out of bounds:', lineNum + 1,e);
                     }
                 });
             });
@@ -165,7 +181,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                 editorView.dispatch({ effects });
             }
         } else if (editorView) {
-            editorView.dispatch({ effects: [clearDecorations.of()] });
+            editorView.dispatch({ effects: [clearDecorations.of(null)] });
         }
     }, [editorView, compareMode, differences, value, side]);
 
@@ -180,7 +196,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
         }
     }
 
-    const EnhancedJsonTreeView = ({ data }: { data: any }) => {
+    const EnhancedJsonTreeView = ({ data }: EnhancedJsonTreeViewProps) => {
         if (!compareMode || !differences.length) {
             return <JsonTreeView data={data} />;
         }

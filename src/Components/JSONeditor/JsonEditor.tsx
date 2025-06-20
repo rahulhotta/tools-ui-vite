@@ -1,6 +1,6 @@
 import './JsonEditor.scss';
 import { useState, useEffect } from 'react'
-import {  Row, Col, message, Switch, Space, Button, Typography, Alert } from 'antd'
+import {  Row, Col, message, Switch, Space, Button, Typography } from 'antd'
 import { SwapOutlined } from '@ant-design/icons'
 import JsonContainer from './JsonContainer/JsonContainer'
 
