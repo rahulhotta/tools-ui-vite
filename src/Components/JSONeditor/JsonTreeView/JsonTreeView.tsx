@@ -98,7 +98,7 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({data}) => {
           {!isLeaf && (
             <Space>
               <Tag 
-                icon={type === 'boolean' ? getBooleanIcon(value as boolean) : getTypeIcon(type)} 
+                icon={getTypeIcon(type)} 
                 color={getTypeColor(type)} 
                 className="type-tag"
               >
