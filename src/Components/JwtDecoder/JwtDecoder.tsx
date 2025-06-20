@@ -1,14 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Input, Typography, Row, Col, Alert, Divider } from 'antd';
+import  { useState, useEffect } from 'react';
+import {  Input, Typography, Row, Col, Alert } from 'antd';
 import CommonCard from '../../Utils/CommonElements/Card/CommonCard'
 import './JwtDecoder.scss'
-import { FaCommentMedical } from 'react-icons/fa';
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 
+interface JWTHeader {
+    alg: string; // Algorithm used for signing
+    typ: string; // Type of token, usually "JWT"
+}
+ 
+interface JWTPayload {
+    sub?: string;
+    name?: string;
+    iat?: number;
+    exp?: number;
+    [key: string]: string | number | undefined;
+}
+ 
+ 
+interface JWTState {
+    header?: JWTHeader | null;
+    payload?: JWTPayload | null;
+    signature?: null | string;
+    error?: null | string;
+    isPayloadOnly?: boolean;
+    doubleEncoded?: boolean;
+    originalData?: null;
+}
+
 const JWTDecoder = () => {
   const [encodedJWT, setEncodedJWT] = useState('');
-  const [decodedJWT, setDecodedJWT] = useState({
+  const [decodedJWT, setDecodedJWT] = useState<JWTState>({
     header: null,
     payload: null,
     signature: null,
@@ -75,13 +98,15 @@ const JWTDecoder = () => {
         };
       }
     } catch (error) {
-      return {
-        header: null,
-        payload: null,
-        signature: null,
-        error: 'Invalid token or payload. Please check your input - it should be valid Base64URL encoded data.',
-        isPayloadOnly: false
-      };
+      if(error){
+        return {
+          header: null,
+          payload: null,
+          signature: null,
+          error: 'Invalid token or payload. Please check your input - it should be valid Base64URL encoded data.',
+          isPayloadOnly: false
+        };
+      }
     }
   };
 

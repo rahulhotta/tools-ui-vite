@@ -38,31 +38,35 @@ const decorationsField = StateField.define({
   update(decorations, tr) {
     decorations = decorations.map(tr.changes);
     
-    for (let e of tr.effects) {
-      if (e.is(addLineEffect)) {
-        decorations = decorations.update({
-          add: [addedDecoration.range(e.value)]
-        });
-      } else if (e.is(removeLineEffect)) {
-        decorations = decorations.update({
-          add: [removedDecoration.range(e.value)]
-        });
-      } else if (e.is(changeLineEffect)) {
-        decorations = decorations.update({
-          add: [changedDecoration.range(e.value)]
-        });
-      } else if (e.is(clearDecorations)) {
-        decorations = Decoration.none;
-      }
-    }
-    
+   for (const e of tr.effects) {
+  if (e.is(addLineEffect) && e.value !== null) {
+    const value = e.value as number;
+    decorations = decorations.update({
+      add: [addedDecoration.range(value)],
+    });
+  } else if (e.is(removeLineEffect) && e.value !== null) {
+    const value = e.value as number;
+    decorations = decorations.update({
+      add: [removedDecoration.range(value)],
+    });
+  } else if (e.is(changeLineEffect) && e.value !== null) {
+    const value = e.value as number;
+    decorations = decorations.update({
+      add: [changedDecoration.range(value)],
+    });
+  } else if (e.is(clearDecorations)) {
+    decorations = Decoration.none;
+  }
+}
+
+
     return decorations;
   },
   provide: f => EditorView.decorations.from(f)
 });
 
 // Function to find line numbers for paths in JSON string
-const findLineForPath = (jsonString, path) => {
+const findLineForPath = (jsonString:string, path:string) => {
   if (!path) return [];
   
   const lines = jsonString.split('\n');
@@ -96,7 +100,7 @@ interface jsonContainerPropType {
     containerKey: string,
     handleClear: (containerKey: string) => void,
     compareMode?: boolean,
-    differences?: any[],
+    differences?: unknown[],
     side?: 'left' | 'right'
 }
 

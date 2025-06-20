@@ -82,7 +82,7 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
 
     const deleteImage = (index: number) => {
         console.log("before", image[index]);
-        const updatedImages = image.filter((image, i) => i !== index);
+        const updatedImages = image.filter((_, i) => i !== index);
         setImage(updatedImages);
         console.log("after", updatedImages);
     };
