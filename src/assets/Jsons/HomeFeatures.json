@@ -60,6 +60,15 @@
             "description": "Shorten your url.",
             "badge": false,
             "badgeText": null
+          },
+          {
+            "childId": 2,
+            "name": "QR Generator",
+            "route": "others/qr-generator",
+            "icon": "MdOutlineQrCodeScanner",
+            "description": "Create free QR Codes instantly",
+            "badge": true,
+            "badgeText": "new"
           }
         ]
       }
