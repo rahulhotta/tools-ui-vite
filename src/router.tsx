@@ -4,7 +4,8 @@ import UrlShortener from "./Components/url-shortener/url-shortener";
 import LandingPage from "./Components/home/Landing";
 import Layout from "./layout";
 import JsonEditor from "./Components/JSONeditor/JsonEditor";
-import JwtDecoder from "./Components/JwtDecoder/JwtDecoder"
+import JwtDecoder from "./Components/JwtDecoder/JwtDecoder";
+import QRCodeGenerator from "./Components/QRCodeGenerator/QRCodeGenerator";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
                 path: 'jwt/jwt-decoder',
                 element: <JwtDecoder />,
             },
+            {
+                path: 'others/qr-generator',
+                element: <QRCodeGenerator />,
+            }
+
             // Add more routes here
         ]
     }
