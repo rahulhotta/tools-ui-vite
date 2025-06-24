@@ -1,21 +1,34 @@
 import React, { useState } from 'react'
-import { QRCode, Segmented, Space } from 'antd';
+import { QRCode, Segmented, Space, ColorPicker, Slider, Select, Upload, Switch, Tooltip } from 'antd';
 import type { QRCodeProps } from 'antd';
 import CommonCard from '../../Utils/CommonElements/Card/CommonCard';
 import { Col, Row, message } from 'antd';
 import { Form, Input } from 'antd';
 import "./QRCodeGenerator.scss";
 import Button from '../../Utils/CommonElements/Button/Button';
-import { Link } from 'react-router-dom';
+import { CopyOutlined, HistoryOutlined } from '@ant-design/icons';
+import { FaRegCircleQuestion } from "react-icons/fa6";
 
 type FieldType = {
   content?: string;
 };
 
+type QRHistory = {
+  content: string;
+  timestamp: number;
+};
+
 function QRCodeGenerator() {
   const [content, setContent] = useState('https://littletools.cc/');
   const [messageApi, contextHolder] = message.useMessage();
-  const [showUrlShortener, setShowShortener] = useState(false);
+  const [bgColor, setBgColor] = useState('#ffffff');
+  const [fgColor, setFgColor] = useState('#000000');
+  const [qrSize, setQrSize] = useState(300);
+  const [errorLevel, setErrorLevel] = useState<'L' | 'M' | 'Q' | 'H'>('L');
+  const [logo, setLogo] = useState<string | null>(null);
+  const [qrHistory, setQrHistory] = useState<QRHistory[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [autoGenerate, setAutoGenerate] = useState(true);
 
   function doDownload(url: string, fileName: string) {
     const a = document.createElement('a');
@@ -43,57 +56,211 @@ function QRCodeGenerator() {
     doDownload(url, 'QRCode.svg');
   };
 
-  function handleChange(e: any) {
-    if (e.target.value.length <= 2000) {
-      setContent(e.target.value || 'https://littletools.cc/');
+  const addToHistory = (newContent: string) => {
+    if (newContent && newContent !== 'https://littletools.cc/') {
+      setQrHistory(prev => {
+        const exists = prev.some(item => item.content === newContent);
+        if (!exists) {
+          const newHistory = [{ content: newContent, timestamp: Date.now() }, ...prev.slice(0, 9)];
+          return newHistory;
+        }
+        return prev;
+      });
     }
-    else {
-      setShowShortener(true)
-      messageApi.error("The content Must not exceed 1000 characters");
+  };
+
+  function handleChange(e) {
+    const newContent = e.target.value || 'https://littletools.cc/';
+    if (e.target.value.length <= 2000) {
+      setContent(newContent);
+      if (autoGenerate) {
+        addToHistory(newContent);
+      }
     }
   }
 
+  const handleLogoUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setLogo(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+    return false;
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(content).then(() => {
+      messageApi.success('Content copied to clipboard!');
+    });
+  };
+
+  const selectFromHistory = (historyContent: string) => {
+    setContent(historyContent);
+    setShowHistory(false);
+  };
+
+
 
   const [renderType, setRenderType] = React.useState<QRCodeProps['type']>('canvas');
+
+  const handleDownloadChange = (value: QRCodeProps['type']) => {
+    setRenderType(value);
+  };
+
   return (
     <>
-      <h1>hello</h1>
       <div className='qr_scanner'>
         {contextHolder}
         <Row gutter={24} className='qr_container'>
           <Col span={24} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 12 }}>
             <CommonCard>
               <div className='input-card'>
-                <Form
-                  layout="vertical"
-                  name="basic"
-                  style={{ width: '100%', maxWidth: '400px' }}
-                  initialValues={{ remember: true }}
-                  autoComplete="off"
-                >
-                  <Form.Item<FieldType>
-                    name="content"
-                    label="Url"
-                    max="2000"
-                    rules={[{ required: true, message: 'Please Enter Your Content!' },
-                    { max: 2000, message: 'Content must be less than 800 characters!' }
-                    ]}
+                <div style={{ width: '100%', maxWidth: '400px' }}>
+                  <Form
+                    layout="vertical"
+                    name="basic"
+                    style={{ width: '100%' }}
+                    initialValues={{ remember: true }}
+                    autoComplete="off"
                   >
-                    <Input placeholder="Please Enter The URL" value={content} onChange={(e) => handleChange(e)} style={{ width: "100%" }} />
-                  </Form.Item>
-                </Form>
-                {/* {showUrlShortener && (
-                <a 
-                    // href={`/links/url-shortener/${encodeURIComponent(content)}`} 
-                     href={`/links/url-shortener/`}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                >
-                    <Button type="primary">
-                        Shorten URL
-                    </Button>
-                </a>
-            )} */}
+                    <Form.Item<FieldType>
+                      name="content"
+                      label={
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          Content
+                          <Tooltip title="Copy current content">
+                            <CopyOutlined onClick={copyToClipboard} style={{ cursor: 'pointer', color: '#1890ff' }} />
+                          </Tooltip>
+                          <Tooltip title="Show history">
+                            <HistoryOutlined
+                              onClick={() => setShowHistory(!showHistory)}
+                              style={{ cursor: 'pointer', color: qrHistory.length > 0 ? '#1890ff' : '#ccc' }}
+                            />
+                          </Tooltip>
+                        </div>
+                      }
+                      rules={[{ required: true, message: 'Please Enter Your Content!' },
+                      { max: 2000, message: 'Content must be less than 2000 characters!' }
+                      ]}
+                    >
+                      <Input.TextArea
+                        placeholder="Please Enter The URL or content"
+                        value={content}
+                        onChange={(e) => handleChange(e)}
+                        style={{ width: "100%" }}
+                        rows={3}
+                        showCount
+                        maxLength={2000}
+                      />
+                    </Form.Item>
+                  </Form>
+
+                  {showHistory && qrHistory.length > 0 && (
+                    <div style={{ marginBottom: '16px', padding: '8px', border: '1px solid #d9d9d9', borderRadius: '6px', maxHeight: '150px', overflowY: 'auto' }}>
+                      <div style={{ fontSize: '12px', marginBottom: '8px', fontWeight: '500' }}>Recent QR Codes:</div>
+                      {qrHistory.map((item, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            padding: '4px 8px',
+                            margin: '2px 0',
+                            backgroundColor: '#f5f5f5',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '11px'
+                          }}
+                          onClick={() => selectFromHistory(item.content)}
+                        >
+                          {item.content.length > 50 ? `${item.content.substring(0, 50)}...` : item.content}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div style={{ marginBottom: '4px' }}>
+                    <div style={{ fontSize: '12px', marginBottom: '8px', fontWeight: '500' }}>Customization:</div>
+
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Size: {qrSize}px</div>
+                      <Slider
+                        min={100}
+                        max={500}
+                        value={qrSize}
+                        onChange={setQrSize}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <Row gutter={8} style={{ marginBottom: '12px' }}>
+                      <Col span={12}>
+                        <div style={{ fontSize: '11px', marginBottom: '4px' }}>Background</div>
+                        <ColorPicker
+                          value={bgColor}
+                          onChange={(color) => setBgColor(color.toHexString())}
+                          showText
+                          size="small"
+                          style={{ width: '100%' }}
+                        />
+                      </Col>
+                      <Col span={12}>
+                        <div style={{ fontSize: '11px', marginBottom: '4px' }}>Foreground</div>
+                        <ColorPicker
+                          value={fgColor}
+                          onChange={(color) => setFgColor(color.toHexString())}
+                          showText
+                          size="small"
+                          style={{ width: '100%' }}
+                        />
+                      </Col>
+                    </Row>
+
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Error Correction Level
+                        <Tooltip title={
+                          <>
+                            Higher levels fix more damage but make the QR code bigger. Choose based on how much wear you expect
+                          </>
+                        }><FaRegCircleQuestion style={{ marginLeft: '5px' }} /></Tooltip></div>
+                      <Select
+                        value={errorLevel}
+                        onChange={setErrorLevel}
+                        size="small"
+                        style={{ width: '100%' }}
+                        options={[
+                          { value: 'L', label: 'Low (~7%)' },
+                          { value: 'M', label: 'Medium (~15%)' },
+                          { value: 'Q', label: 'Quartile (~25%)' },
+                          { value: 'H', label: 'High (~30%)' }
+                        ]}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Logo (center image)</div>
+                      <Upload
+                        accept="image/*"
+                        beforeUpload={handleLogoUpload}
+                        showUploadList={false}
+                      >
+                        <Button>Upload Logo</Button>
+                      </Upload>
+                      {logo && (
+                        <div style={{ marginTop: '4px' }}>
+                          <Button onClick={() => setLogo(null)}>Remove Logo</Button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px' }}>
+                      <Switch
+                        size="small"
+                        checked={autoGenerate}
+                        onChange={setAutoGenerate}
+                      />
+                      Auto-save to history
+                    </div>
+                  </div>
+                </div>
               </div>
             </CommonCard>
           </Col>
@@ -101,32 +268,45 @@ function QRCodeGenerator() {
             <CommonCard>
               <div className='qr-card'>
                 <Space id="myqrcode" direction="vertical">
-                  <Segmented options={['canvas', 'svg']} value={renderType} onChange={setRenderType} block />
+                  <Segmented options={['canvas', 'svg']} value={renderType} onChange={handleDownloadChange} block />
                   <div className='qr_scanner_container'>
-                    <QRCode
-                      type={renderType}
-                      value={content}
-                      errorLevel="L"
-                      size={300}
-                      bgColor="#fff"
-                      style={{ marginBottom: 16 }}
-                    />
-                    <Button
-                      type="primary"
-                      className="download-button"
-                      onClick={renderType === 'canvas' ? downloadCanvasQRCode : downloadSvgQRCode}
-                    >
-                      Download
-                    </Button>
-                    {/* <div style={{
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                      <QRCode
+                        type={renderType}
+                        value={content}
+                        errorLevel={errorLevel}
+                        size={qrSize}
+                        bgColor={bgColor}
+                        color={fgColor}
+                        style={{ marginBottom: 16 }}
+                        icon={logo || undefined}
+                        iconSize={logo ? qrSize / 6 : 0}
+                      />
+                    </div>
+                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'center' }}>
+                      <Button
+                        type="submit"
+                        onClick={renderType === 'canvas' ? downloadCanvasQRCode : downloadSvgQRCode}
+                      >
+                        Download {renderType.toUpperCase()}
+                      </Button>
+                      <Tooltip title="Generate new QR code">
+                        <Button
+                          onClick={() => addToHistory(content)}
+                        >
+                          Save
+                        </Button>
+                      </Tooltip>
+                    </Space>
+                    <div style={{
                       fontSize: '11px',
                       color: '#999',
                       marginTop: '8px',
                       textAlign: 'center',
                       wordBreak: 'break-all'
                     }}>
-                      QR Code contains: {content.length > 50 ? `${content.substring(0, 50)}...` : content}
-                    </div> */}
+                      QR Contains: {content.length > 30 ? `${content.substring(0, 30)}...` : content}
+                    </div>
                   </div>
                 </Space>
               </div>
@@ -134,7 +314,6 @@ function QRCodeGenerator() {
           </Col>
         </Row>
       </div>
-
     </>
   )
 }
