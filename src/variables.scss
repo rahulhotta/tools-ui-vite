@@ -1,3 +1,32 @@
-$base_color: rgba(222, 217, 255, 0.788);
-$primary_color: #ffffff;
-$secondary_color: #162199;
+// Light theme colors (your current colors)
+$light-base-color: rgb(232, 232, 232);
+$light-primary-color: #000000;
+$light-secondary-color: rgba(32, 32, 32, 0.9);
+
+// Dark theme colors
+$dark-base-color: rgb(36, 36, 36);
+$dark-primary-color: #ffffff;
+$dark-secondary-color: rgba(232, 232, 232, 0.9);
+
+// CSS Custom Properties
+:root {
+  --base-color: #{$light-base-color};
+  --primary-color: #{$light-primary-color};
+  --secondary-color: #{$light-secondary-color};
+}
+
+.dark {
+  --base-color: #{$dark-base-color};
+  --primary-color: #{$dark-primary-color};
+  --secondary-color: #{$dark-secondary-color};
+}
+
+// Your original variables that work with @use
+$base_color: var(--base-color);
+$primary_color: var(--primary-color);
+$secondary_color: var(--secondary-color);
+
+// Smooth transitions
+* {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}

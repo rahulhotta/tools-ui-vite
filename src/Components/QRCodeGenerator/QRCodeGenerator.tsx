@@ -126,8 +126,10 @@ function QRCodeGenerator() {
                     <Form.Item<FieldType>
                       name="content"
                       label={
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          Content
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} >
+                          <h3 className='content_heading'>
+                            Content
+                          </h3>
                           <Tooltip title="Copy current content">
                             <CopyOutlined onClick={copyToClipboard} style={{ cursor: 'pointer', color: '#1890ff' }} />
                           </Tooltip>

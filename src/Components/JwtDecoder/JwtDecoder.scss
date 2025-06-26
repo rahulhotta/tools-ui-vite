@@ -39,7 +39,7 @@
         }
         .about_jwt_header{
             background-color: white;
-            color: vars.$secondary_color;
+            color: rgb(66, 66, 66);
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -47,6 +47,14 @@
         }
         .about_jwt_container{
             padding: 20px;
+            color: vars.$primary_color;
+            .about_jwt_para{
+                color: vars.$primary_color;
+            }
         }
     }
+}
+
+.jwt_paragraph{
+    color: vars.$primary_color;
 }

@@ -6,7 +6,10 @@
     justify-content: center;
     height: 100vh;
     width: 100vw;
-
+    color: vars.$primary_color !important;
+    .content_heading{
+        color: vars.$primary_color !important;
+    }
     .qr_container {
         width: clamp(300px, 95%, 1000px);
         min-height: 500px;

@@ -210,7 +210,7 @@ const JWTDecoder = () => {
                 rows={8}
                 style={{ fontFamily: 'monospace' }}
               />
-              <Paragraph style={{ marginTop: '12px', fontSize: '12px', color: 'rgb(73 73 73)' }}>
+              <Paragraph style={{ marginTop: '12px', fontSize: '12px'}} className='jwt_paragraph'>
                 Supports multiple formats:
                 <br />• Complete JWT token (header.payload.signature)
                 <br />• Just the payload part (Base64URL encoded JSON)
@@ -316,12 +316,12 @@ const JWTDecoder = () => {
           <CommonCard >
           {/* <Card style={{ marginTop: '24px' }} title="About JWT"> */}
           <div className="about_jwt_header">
-            <h2>
+            <h2 >
               About JWT
             </h2>
           </div>
           <div className='about_jwt_container'>
-            <Paragraph>
+            <Paragraph className='about_jwt_para'>
               JSON Web Tokens (JWT) are an open standard (RFC 7519) that defines a compact and self-contained way 
               for securely transmitting information between parties as a JSON object. A JWT consists of three parts:
             </Paragraph>

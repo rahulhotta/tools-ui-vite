@@ -1,10 +1,10 @@
 @use '../../variables.scss' as vars;
 .landing_page_container {
-  background-image: url("../../assets/Images/cornered-stairs.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
+  // background-image: url("../../assets/Images/cornered-stairs.svg");
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-attachment: fixed;
   min-height: 100vh;
   width: 100vw;
   // padding-top: 50px;
@@ -31,8 +31,14 @@
   }
   .child_folder{
     padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
     .feature_name{
       color: vars.$secondary_color;
+      margin-bottom: 15px;
+      font-size: 2rem;
     }
   }
   .child_card_container{
