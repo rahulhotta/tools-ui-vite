@@ -15,7 +15,7 @@ const { Title } = Typography;
 const addLineEffect = StateEffect.define();
 const removeLineEffect = StateEffect.define();
 const changeLineEffect = StateEffect.define();
-const clearDecorations = StateEffect.define();
+const clearDecorations = StateEffect.define<void>();
 
 interface Diff {
     type: 'added' | 'removed' | 'value_change' | 'type_change';
@@ -35,75 +35,75 @@ interface EnhancedJsonTreeViewProps {
 
 // Create decorations for different types of changes
 const addedDecoration = Decoration.line({
-  attributes: { style: "background-color: #f6ffed; border-left: 3px solid #52c41a; padding-left: 4px;" }
+    attributes: { style: "background-color: #f6ffed; border-left: 3px solid #52c41a; padding-left: 4px;" }
 });
 
 const removedDecoration = Decoration.line({
-  attributes: { style: "background-color: #fff2f0; border-left: 3px solid #ff4d4f; padding-left: 4px;" }
+    attributes: { style: "background-color: #fff2f0; border-left: 3px solid #ff4d4f; padding-left: 4px;" }
 });
 
 const changedDecoration = Decoration.line({
-  attributes: { style: "background-color: #fff7e6; border-left: 3px solid #fa8c16; padding-left: 4px;" }
+    attributes: { style: "background-color: #fff7e6; border-left: 3px solid #fa8c16; padding-left: 4px;" }
 });
 
 // State field to manage decorations
 const decorationsField = StateField.define({
-  create() {
-    return Decoration.none;
-  },
-  update(decorations, tr) {
-    decorations = decorations.map(tr.changes);
-    
-   for (const e of tr.effects) {
-  if (e.is(addLineEffect) && e.value !== null) {
-    const value = e.value as number;
-    decorations = decorations.update({
-      add: [addedDecoration.range(value)],
-    });
-  } else if (e.is(removeLineEffect) && e.value !== null) {
-    const value = e.value as number;
-    decorations = decorations.update({
-      add: [removedDecoration.range(value)],
-    });
-  } else if (e.is(changeLineEffect) && e.value !== null) {
-    const value = e.value as number;
-    decorations = decorations.update({
-      add: [changedDecoration.range(value)],
-    });
-  } else if (e.is(clearDecorations)) {
-    decorations = Decoration.none;
-  }
-}
+    create() {
+        return Decoration.none;
+    },
+    update(decorations, tr) {
+        decorations = decorations.map(tr.changes);
+
+        for (const e of tr.effects) {
+            if (e.is(addLineEffect) && e.value !== null) {
+                const value = e.value as number;
+                decorations = decorations.update({
+                    add: [addedDecoration.range(value)],
+                });
+            } else if (e.is(removeLineEffect) && e.value !== null) {
+                const value = e.value as number;
+                decorations = decorations.update({
+                    add: [removedDecoration.range(value)],
+                });
+            } else if (e.is(changeLineEffect) && e.value !== null) {
+                const value = e.value as number;
+                decorations = decorations.update({
+                    add: [changedDecoration.range(value)],
+                });
+            } else if (e.is(clearDecorations)) {
+                decorations = Decoration.none;
+            }
+        }
 
 
-    return decorations;
-  },
-  provide: f => EditorView.decorations.from(f)
+        return decorations;
+    },
+    provide: f => EditorView.decorations.from(f)
 });
 
 // Function to find line numbers for paths in JSON string
-const findLineForPath = (jsonString:string, path:string) => {
-  if (!path) return [];
-  
-  const lines = jsonString.split('\n');
-  const pathParts = path.split(/[.\[\]]/).filter(p => p !== '');
-  const foundLines = [];
-  
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    
-    // Check if any part of the path appears in this line
-    for (const part of pathParts) {
-      if (line.includes(`"${part}"`) || 
-          (line.includes(part) && /^\d+$/.test(part)) ||
-          line.includes(`"${part}"`)) {
-        foundLines.push(i);
-        break;
-      }
+const findLineForPath = (jsonString: string, path: string) => {
+    if (!path) return [];
+
+    const lines = jsonString.split('\n');
+    const pathParts = path.split(/[.\[\]]/).filter(p => p !== '');
+    const foundLines = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Check if any part of the path appears in this line
+        for (const part of pathParts) {
+            if (line.includes(`"${part}"`) ||
+                (line.includes(part) && /^\d+$/.test(part)) ||
+                line.includes(`"${part}"`)) {
+                foundLines.push(i);
+                break;
+            }
+        }
     }
-  }
-  
-  return foundLines;
+
+    return foundLines;
 };
 
 // Enhanced JsonTreeView with diff highlighting
@@ -120,11 +120,11 @@ interface jsonContainerPropType {
     side?: 'left' | 'right'
 }
 
-const JsonContainer: React.FC<jsonContainerPropType> = ({ 
-    title, 
-    value, 
-    onChange, 
-    containerKey, 
+const JsonContainer: React.FC<jsonContainerPropType> = ({
+    title,
+    value,
+    onChange,
+    containerKey,
     handleClear,
     compareMode = false,
     differences = [],
@@ -176,7 +176,8 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                     }
                 });
             });
-            
+
+
             if (effects.length > 1) {
                 editorView.dispatch({ effects });
             }
@@ -212,10 +213,10 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
             <div style={containerStyle}>
                 <JsonTreeView data={data} />
                 {compareMode && differences.length > 0 && (
-                    <div style={{ 
-                        marginTop: '8px', 
-                        padding: '4px 8px', 
-                        backgroundColor: '#f0f2f5', 
+                    <div style={{
+                        marginTop: '8px',
+                        padding: '4px 8px',
+                        backgroundColor: '#f0f2f5',
                         borderRadius: '4px',
                         fontSize: '12px',
                         color: '#666'
@@ -248,11 +249,12 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
     }
 
     // Get relevant differences for this side
-    const relevantDifferences = differences.filter(d => 
+const relevantDifferences = differences.filter(d =>
         (d.type === 'added' && side === 'right') ||
         (d.type === 'removed' && side === 'left') ||
         (d.type === 'value_change' || d.type === 'type_change')
     );
+
 
     return (
         <div style={{ height: "100%" }}>
@@ -263,9 +265,9 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                             <Title level={4} className="container-title">
                                 {title}
                                 {compareMode && relevantDifferences.length > 0 && (
-                                    <span style={{ 
-                                        marginLeft: '8px', 
-                                        fontSize: '12px', 
+                                    <span style={{
+                                        marginLeft: '8px',
+                                        fontSize: '12px',
                                         color: '#1890ff',
                                         fontWeight: 'normal'
                                     }}>
@@ -274,36 +276,36 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                                 )}
                             </Title>
                             <Space>
-                                <Button 
-                                    color="primary" 
-                                    size="small" 
-                                    variant="outlined" 
+                                <Button
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
                                     onClick={handleCopy}
                                     title="Copy JSON"
                                 >
                                     <CopyOutlined />
                                 </Button>
 
-                                <Button 
-                                    size="small" 
-                                    color="primary" 
-                                    variant="outlined" 
+                                <Button
+                                    size="small"
+                                    color="primary"
+                                    variant="outlined"
                                     onClick={handleDownload}
                                     title="Download JSON"
                                 >
                                     <DownloadOutlined />
                                 </Button>
 
-                                <Button 
-                                    size="small" 
-                                    color="danger" 
-                                    variant="outlined" 
+                                <Button
+                                    size="small"
+                                    color="danger"
+                                    variant="outlined"
                                     onClick={() => { handleClear(containerKey) }}
                                     title="Clear JSON"
                                 >
                                     <DeleteOutlined />
                                 </Button>
-                                
+
                                 <Button
                                     size="small"
                                     onClick={formatJson}
@@ -316,13 +318,13 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                             </Space>
                         </div>
                         <Space align="center" className='edit_toggle_container'>
-                            <EyeOutlined className={viewMode === 'tree' ? 'active-icon' : ''} />
+                            <EyeOutlined className={viewMode === 'tree' ? 'active-icon' : 'inactive-icon'} />
                             <Switch
                                 checked={viewMode === 'raw'}
                                 onChange={(checked) => setViewMode(checked ? 'raw' : 'tree')}
                                 size="small"
                             />
-                            <EditOutlined className={viewMode === 'raw' ? 'active-icon' : ''} />
+                            <EditOutlined className={viewMode === 'raw' ? 'active-icon' : 'inactive-icon'} />
                         </Space>
                     </div>
 
@@ -348,7 +350,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                                 )}
                             </div>
                         ) : (
-                            <div 
+                            <div
                                 className={`code-editor-wrapper ${compareMode ? 'compare-mode' : ''}`}
                                 data-differences={JSON.stringify(differences)}
                                 data-side={side}
@@ -361,7 +363,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
                                     theme="light"
                                     onCreateEditor={(view) => setEditorView(view)}
                                 />
-                                
+
                                 {/* Show comparison status */}
                                 {compareMode && relevantDifferences.length > 0 && (
                                     <div className="diff-indicator">

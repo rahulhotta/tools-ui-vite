@@ -193,7 +193,7 @@ const JsonEditor = () => {
                     <div className="compare-controls" style={{ marginBottom: '16px', textAlign: 'center' }}>
                         <Space size="large">
                             <div>
-                                <Title level={3} style={{ margin: 0 }}>JSON Editor with Compare</Title>
+                                <Title level={3} style={{ margin: 0 }} className='json_editor_title'>JSON Editor with Compare</Title>
                             </div>
                             
                             <Space>

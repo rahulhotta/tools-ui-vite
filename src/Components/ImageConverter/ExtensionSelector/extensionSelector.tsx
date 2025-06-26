@@ -131,10 +131,10 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
                             </div>
                         </Col>
 
-                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "23px" }}>
-                            <AiFillEye onClick={() => handlePreview(index)} />
+                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "23px" }} className="extension-icon-container">
+                            <AiFillEye onClick={() => handlePreview(index)} className='eye_icon'/>
                         </Col>
-                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "17px", color: "red", paddingTop: "3px" }}>
+                        <Col span={1} xs={{ span: 2 }} sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{ fontSize: "17px", color: "red", paddingTop: "3px" }} className="extension-icon-container">
                             <ImCross onClick={() => deleteImage(index)} />
                         </Col>
                     </Row>

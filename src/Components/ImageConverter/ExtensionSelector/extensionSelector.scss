@@ -6,15 +6,19 @@
     // margin-top: 50px;
     // height: 100px;   
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     padding: 10px;
 }
 .extension_selector_image_name{
     font-weight: 500;
+    color: vars.$secondary_color;
+    font-weight: 600;
 }
 .extension_selector_image_size{
-    color: #656565;
+    color: vars.$secondary_color;
+    opacity: 0.7;
+    font-weight: 500;
 }
 .extension_selector_file_convert_select_container{
     flex-direction: column;
@@ -38,3 +42,12 @@
     align-items: flex-start;
     justify-content: flex-end;
 }  
+
+.eye_icon{
+    color: vars.$primary_color !important;
+}
+.extension-icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -6,10 +6,16 @@ import router from './router';
 function App() {
 
   return (
-    <>
+    <div className=''>
       <Loader />
+      <div className='grid-background'></div>
+      <div className="floating-elements">
+        <div className="floating-circle"></div>
+        <div className="floating-circle"></div>
+        <div className="floating-circle"></div>
+      </div>
       <RouterProvider router={router}/>
-    </>
+    </div>
   )
 }
 

@@ -9,17 +9,83 @@
     font-style: normal;
   }
 
-html, body {
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
-    background-size: cover;
-    background-color: #000; /* Fallback color */
-    overscroll-behavior: none; /* Optional: prevents rubber-band scroll on mobile */
-    color: vars.$primary_color;  
-    overflow-x: hidden;
-  }
+// body {
+//     min-height: 100%;
+//     margin: 0;
+//     padding: 0;
+//     // background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
+//     // background-size: cover;
+//     // background-color: #000; /* Fallback color */
+//     // overscroll-behavior: none; /* Optional: prevents rubber-band scroll on mobile */
+//     color: vars.$primary_color;  
+//     overflow-x: hidden;
+//   }
+          body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: vars.$base_color !important;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+.floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(108, 97, 232, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
 .custom_input {
   width: 100%;
   height: 40px;
@@ -41,6 +107,7 @@ html, body {
 .ant-btn-primary {
   background-color: vars.$secondary_color !important;
   border-color: vars.$base_color !important;
+  color: vars.$base_color !important;
 }
 
 .ant-btn-primary:hover {

@@ -1,3 +1,4 @@
+@use '../../../variables.scss' as vars;
 .json-container {
   height: calc(100% - 60px);
   padding: 20px;
@@ -23,6 +24,10 @@
 
   .active-icon {
     color: #1890ff;
+  }
+
+  .inactive-icon{
+    color: vars.$primary_color;
   }
 
   .error-alert {

@@ -1,8 +1,8 @@
 @use '../../variables.scss' as vars;
 .app-layout {
   min-height: 100vh;
-  background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
-    background-size: cover;
+  // background: url('/src/assets/Images/cornered-stairs.svg') no-repeat center center fixed;
+  //   background-size: cover;
   padding-top: 60px;
   .app-header {
     background: #fff;
@@ -71,4 +71,8 @@
       }
     }
   }
+}
+
+.json_editor_title{
+  color: vars.$secondary_color !important;
 }
