@@ -13,10 +13,11 @@ interface ExtensionSelectorProps {
     image: File[];
     preview: string[];
     setImage: (imgs: File[]) => void;
+    setPreview: (string: string[]) => void;
 }
 
 
-const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, preview }) => {
+const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, preview,setPreview }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
@@ -36,8 +37,10 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
 
     const convertToExtension = () => {
         try {
+            event.stopPropagation()
             if (!image) return;
             if (!preview || preview.length === 0) return;
+            console.log(preview)
             preview.forEach((imgSrc, index) => {
                 const img: HTMLImageElement = document.createElement('img');
 
@@ -83,13 +86,15 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
     const deleteImage = (index: number) => {
         console.log("before", image[index]);
         const updatedImages = image.filter((_, i) => i !== index);
+        const updatedPreview = preview.filter((_, i) => i !== index);
         setImage(updatedImages);
+        setPreview(updatedPreview)
         console.log("after", updatedImages);
     };
 
     return (
         <div>
-            <Form onFinish={convertToExtension} name="basic">
+            <Form name="basic">
                 <Row>
                     <Col span={8} xs={{ span: 12 }} sm={{ span: 8 }} md={{ span: 8 }} lg={{ span: 8 }} className='extension_selector_file_convert_select_container'>
                         <Form.Item
@@ -111,10 +116,13 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
                     </Col>
 
                     <Col span={8} xs={{ span: 12 }} sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 8 }}>
-                        <Button type="submit">Convert</Button>
+                        <Button onClick={convertToExtension}>Convert</Button>
                     </Col>
                     <Col span={8} xs={{ span: 8 }} sm={{ span: 8 }} md={{ span: 8 }} lg={{ span: 8 }} className='convert_new_button_container'>
-                        <Button onClick={() => { setImage([]) }}>Convert New File</Button>
+                        <Button onClick={() => { 
+                            setImage([]) 
+                            setPreview([]) 
+                            }}>Convert New File</Button>
                     </Col>
                 </Row>
             </Form>

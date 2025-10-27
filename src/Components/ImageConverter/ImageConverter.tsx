@@ -39,10 +39,10 @@ function ImageConverter() {
           setPreview(prevPreviews => [...prevPreviews, result]);
           setImage(prevImages => [...prevImages, file]);
         }
-      };
-
-      reader.readAsDataURL(file);
-    });
+        };
+        
+        reader.readAsDataURL(file);
+        });
   };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -93,7 +93,7 @@ function ImageConverter() {
           ) : (
             // If you have image then show this
             (
-              <ExtensionSelector image={image} setImage={setImage} preview={preview} />
+              <ExtensionSelector image={image} setImage={setImage} preview={preview} setPreview={setPreview} />
             )
           )}
         </Col>
