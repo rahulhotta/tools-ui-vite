@@ -112,7 +112,7 @@ function QRCodeGenerator() {
       <div className='qr_scanner'>
         {contextHolder}
         <Row gutter={24} className='qr_container'>
-          <Col span={24} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 12 }}>
+          <Col span={24} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 12 }} className='qr_input_column'>
             <CommonCard>
               <div className='input-card'>
                 <div style={{ width: '100%', maxWidth: '400px' }}>
@@ -169,7 +169,7 @@ function QRCodeGenerator() {
                             backgroundColor: '#f5f5f5',
                             borderRadius: '4px',
                             cursor: 'pointer',
-                            fontSize: '11px'
+                            
                           }}
                           onClick={() => selectFromHistory(item.content)}
                         >
@@ -179,11 +179,11 @@ function QRCodeGenerator() {
                     </div>
                   )}
 
-                  <div style={{ marginBottom: '4px' }}>
-                    <div style={{ fontSize: '12px', marginBottom: '8px', fontWeight: '500' }}>Customization:</div>
+                  <div >
+                    <div style={{ fontSize: '1rem', marginBottom: '8px', fontWeight: '500' }}>Customization:</div>
 
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Size: {qrSize}px</div>
+                      <div  className='small_label'>Size: {qrSize}px</div>
                       <Slider
                         min={100}
                         max={500}
@@ -195,7 +195,7 @@ function QRCodeGenerator() {
 
                     <Row gutter={8} style={{ marginBottom: '12px' }}>
                       <Col span={12}>
-                        <div style={{ fontSize: '11px', marginBottom: '4px' }}>Background</div>
+                        <div  className='small_label'>Background</div>
                         <ColorPicker
                           value={bgColor}
                           onChange={(color) => setBgColor(color.toHexString())}
@@ -205,7 +205,7 @@ function QRCodeGenerator() {
                         />
                       </Col>
                       <Col span={12}>
-                        <div style={{ fontSize: '11px', marginBottom: '4px' }}>Foreground</div>
+                        <div  className='small_label'>Foreground</div>
                         <ColorPicker
                           value={fgColor}
                           onChange={(color) => setFgColor(color.toHexString())}
@@ -217,7 +217,7 @@ function QRCodeGenerator() {
                     </Row>
 
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Error Correction Level
+                      <div  className='small_label'>Error Correction Level
                         <Tooltip title={
                           <>
                             Higher levels fix more damage but make the QR code bigger. Choose based on how much wear you expect
@@ -238,7 +238,7 @@ function QRCodeGenerator() {
                     </div>
 
                     <div style={{ marginBottom: '12px' }}>
-                      <div style={{ fontSize: '11px', marginBottom: '4px' }}>Logo (center image)</div>
+                      <div  className='small_label'>Logo (center image)</div>
                       <Upload
                         accept="image/*"
                         beforeUpload={handleLogoUpload}
@@ -253,7 +253,7 @@ function QRCodeGenerator() {
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px',  }} className='small_label'>
                       <Switch
                         size="small"
                         checked={autoGenerate}
@@ -266,7 +266,7 @@ function QRCodeGenerator() {
               </div>
             </CommonCard>
           </Col>
-          <Col span={24} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 12 }}>
+          <Col span={24} xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 12 }} className='qr_input_column'>
             <CommonCard>
               <div className='qr-card'>
                 <Space id="myqrcode" direction="vertical">
@@ -301,12 +301,13 @@ function QRCodeGenerator() {
                       </Tooltip>
                     </Space>
                     <div style={{
-                      fontSize: '11px',
                       color: '#999',
                       marginTop: '8px',
                       textAlign: 'center',
                       wordBreak: 'break-all'
-                    }}>
+                    }}
+                    className='small_label'
+                    >
                       QR Contains: {content.length > 30 ? `${content.substring(0, 30)}...` : content}
                     </div>
                   </div>
