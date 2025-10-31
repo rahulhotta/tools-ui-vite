@@ -7,10 +7,10 @@ import JsonContainer from './JsonContainer/JsonContainer'
 const { Title } = Typography
 
 // Utility function to deeply compare JSON objects and find differences
-const findDifferences = (obj1: any, obj2: any, path = ''): any[] => {
-  const differences: any[] = [];
+const findDifferences = (obj1: unknown, obj2: unknown, path = ''): Diff[] => {
+  const differences: Diff[] = [];
   
-  const traverse = (o1: any, o2: any, currentPath: string) => {
+  const traverse = (o1: unknown, o2: unknown, currentPath: string) => {
     if (o1 === o2) return;
     
     if (typeof o1 !== typeof o2) {
@@ -127,14 +127,20 @@ const defaultJson2 = {
         "language": "en"
     }
 }
+interface Diff {
+type: 'added' | 'removed' | 'value_change' | 'type_change';
+path: string;
+left?:unknown,
+right?:unknown
+}
 
 const JsonEditor = () => {
     const [json1, setJson1] = useState(JSON.stringify(defaultJson1, null, 2))
     const [json2, setJson2] = useState(JSON.stringify(defaultJson2, null, 2));
     const [compareMode, setCompareMode] = useState(false);
-    const [differences, setDifferences] = useState<any[]>([]);
-    const [parsedJson1, setParsedJson1] = useState<any>(null);
-    const [parsedJson2, setParsedJson2] = useState<any>(null);
+    const [differences, setDifferences] = useState<Diff[]>([]);
+    const [parsedJson1, setParsedJson1] = useState<unknown>(null);
+    const [parsedJson2, setParsedJson2] = useState<unknown>(null);
 
     // Parse JSONs and calculate differences
     useEffect(() => {
@@ -155,7 +161,7 @@ const JsonEditor = () => {
 
     useEffect(() => {
         if (compareMode && parsedJson1 && parsedJson2) {
-            const diffs = findDifferences(parsedJson1, parsedJson2);
+            const diffs= findDifferences(parsedJson1, parsedJson2);
             setDifferences(diffs);
             
             if (diffs.length > 0) {
@@ -193,7 +199,7 @@ const JsonEditor = () => {
                     <div className="compare-controls" style={{ marginBottom: '16px', textAlign: 'center' }}>
                         <Space size="large">
                             <div>
-                                <Title level={3} style={{ margin: 0 }} className='json_editor_title'>JSON Editor with Compare</Title>
+                                <Title level={3} style={{ margin: 0 }} className='json_editor_title'>JSON Editor </Title>
                             </div>
                             
                             <Space>
@@ -202,6 +208,7 @@ const JsonEditor = () => {
                                     onChange={setCompareMode}
                                     checkedChildren="Compare ON"
                                     unCheckedChildren="Compare OFF"
+                                    style={{display:"none"}}
                                 />
                                 
                                 <Button 

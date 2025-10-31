@@ -8,7 +8,7 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-    background-color: rgba(147, 147, 147, 0.5);
+    background-color: rgba(187, 187, 187, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,7 +18,7 @@
     width: 64px;
     height: 64px;
     position: relative;
-    background: vars.$primary_color;
+    background: white;
     border-radius: 4px;
     overflow: hidden;
   }
@@ -31,8 +31,8 @@
     width: 40px;
     height: 40px;
     transform: rotate(45deg) translate(30%, 40%);
-    background: vars.$secondary_color;
-    box-shadow: 32px -34px 0 5px vars.$secondary_color;
+    background: black;
+    box-shadow: 32px -34px 0 5px black;
     animation: slide 2s infinite ease-in-out alternate;
   }
   
@@ -44,7 +44,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: vars.$secondary_color;
+    background: black;
     transform: rotate(0deg);
     transform-origin: 35px 145px;
     animation: rotate 2s infinite ease-in-out;
