@@ -7,7 +7,7 @@ import { json } from '@codemirror/lang-json';
 import { EditorView, Decoration } from '@codemirror/view';
 import { StateField, StateEffect } from '@codemirror/state';
 import CommonCard from '../../../Utils/CommonElements/Card/CommonCard';
-import JsonTreeView from '../JsonTreeView/JsonTreeView';
+import JsonTREEView from '../JsonTreeView/JsonTreeView';
 
 const { Title } = Typography;
 
@@ -199,7 +199,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
 
     const EnhancedJsonTreeView = ({ data }: EnhancedJsonTreeViewProps) => {
         if (!compareMode || !differences.length) {
-            return <JsonTreeView data={data} />;
+            return <JsonTREEView data={data} />;
         }
 
         // For tree view, we'll add a subtle border to indicate comparison mode
@@ -211,7 +211,7 @@ const JsonContainer: React.FC<jsonContainerPropType> = ({
 
         return (
             <div style={containerStyle}>
-                <JsonTreeView data={data} />
+                <JsonTREEView data={data} />
                 {compareMode && differences.length > 0 && (
                     <div style={{
                         marginTop: '8px',
