@@ -40,6 +40,7 @@ const ExtensionSelector: React.FC<ExtensionSelectorProps> = ({ image, setImage, 
             event.stopPropagation()
             if (!image) return;
             if (!preview || preview.length === 0) return;
+            if (!selectedExtension) return;
             console.log(preview)
             preview.forEach((imgSrc, index) => {
                 const img: HTMLImageElement = document.createElement('img');
