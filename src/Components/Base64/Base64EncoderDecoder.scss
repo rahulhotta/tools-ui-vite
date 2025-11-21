@@ -1,0 +1,122 @@
+@use '../../variables.scss' as vars;
+
+.page-style {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    .page-container {
+        max-width: 1200px;
+        margin: '0 auto';
+        padding-top: 60px;
+
+        .base64_page_title {
+            text-align: center;
+            margin-bottom: 32px;
+            color: vars.$secondary_color;
+        }
+
+        .encoded_base64_header {
+            background-color: #6363ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .encoded_base64_container {
+            padding: 20px;
+        }
+
+        .decoded_base64_header {
+            background-color: #60d360;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .decded_base64_container {
+            padding: 20px;
+        }
+
+        .about_base64_header {
+            background-color: white;
+            color: rgb(66, 66, 66);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .about_base64_container {
+            padding: 20px;
+            color: vars.$primary_color;
+
+            .about_base64_para {
+                color: vars.$primary_color;
+            }
+        }
+    }
+}
+
+.base64_paragraph {
+    color: vars.$primary_color;
+}
+
+/* Info + Toggle Row */
+.base64_info_toggle_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .ant-segmented {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 4px;
+
+        .ant-segmented-item {
+            padding: 6px 14px;
+            border-radius: 6px;
+
+            .anticon {
+                margin-right: 6px;
+                font-size: 16px;
+            }
+        }
+
+        .ant-segmented-item-selected {
+            background-color: #1890ff;
+            color: #fff;
+            transition: all 0.1s ease;
+        }
+    }
+}
+
+.ant-tabs-tab {
+    font-size: 20px !important;
+    padding: 10px 20px !important;
+}
+
+.ant-tabs-tab-active {
+    font-weight: 600;
+}
+
+.decoded_preview_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.decoded_thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}

@@ -6,10 +6,12 @@ import CommonCard from '../../../Utils/CommonElements/Card/CommonCard';
 
 interface DragAndDropProps {
     onDrop: (acceptedFiles: File[]) => void;
-    handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    accept?: Record<string, string[]>;
+    multiple?: boolean;
 }
-const  DragDropArea: React.FC<DragAndDropProps> = ({ handleImageChange, onDrop }) =>{
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+const  DragDropArea: React.FC<DragAndDropProps> = ({ handleImageChange, onDrop, accept, multiple }) =>{
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: accept || undefined,  multiple: multiple ?? true  });
     return (
         <div className='dropzone_container'>
             <CommonCard >
