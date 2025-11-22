@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Row, Input, Col, Typography, Alert, Space, Segmented, Tabs, message, Image } from "antd";
+import { Row, Input, Col, Typography, Alert, Space, Segmented, Tabs, Image } from "antd";
 import CommonCard from "../../Utils/CommonElements/Card/CommonCard";
 import './Base64EncoderDecoder.scss'
 import Button from '../../Utils/CommonElements/Button/Button';
@@ -20,9 +20,6 @@ function Base64EncoderDecoder() {
     const [base64Data, setBase64Data] = useState<string>("");
     const [decodedImage, setDecodedImage] = useState<string>("");
     const [isPreviewVisible, setIsPreviewVisible] = useState(false);
-
-    const [image, setImage] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string | null>(null);
 
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -60,8 +57,6 @@ function Base64EncoderDecoder() {
         reader.onload = () => {
             const fileContent = reader.result;
             if (typeof fileContent === 'string') {
-                setPreview(fileContent);
-                setImage(file);
                 setBase64Data(fileContent);
             }
         };
@@ -77,8 +72,6 @@ function Base64EncoderDecoder() {
         const reader = new FileReader();
         reader.onload = () => {
             if (typeof reader.result === 'string') {
-                setPreview(reader.result);
-                setImage(file);
                 setBase64Data(reader.result);
             }
         };
@@ -344,7 +337,6 @@ function Base64EncoderDecoder() {
                             setInputText("");
                             setOutputText("");
                             setBase64Data("");
-                            setImage(null);
                             setDecodedImage("");
                         }}
                         options={[
