@@ -6,6 +6,7 @@ import Layout from "./layout";
 import JsonEditor from "./Components/JSONeditor/JsonEditor";
 import JwtDecoder from "./Components/JwtDecoder/JwtDecoder";
 import QRCodeGenerator from "./Components/QRCodeGenerator/QRCodeGenerator";
+import Base64Page from "./Components/Base64/Base64EncoderDecoder";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: 'others/qr-generator',
                 element: <QRCodeGenerator />,
+            },
+            {
+                path: 'base64/base64-enoderdecoder',
+                element: <Base64Page />,
             }
 
             // Add more routes here

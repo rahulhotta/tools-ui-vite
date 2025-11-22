@@ -29,7 +29,7 @@
         "name": "Dev Tools",
         "children" : [
            {
-            "childId": 2,
+            "childId": 1,
             "name": "JSON Editor",
             "route": "jsons/json-editor",
             "icon": "VscJson",
@@ -38,11 +38,20 @@
             "badgeText": "New"
           },
           {
-            "childId": 3,
+            "childId": 2,
             "name": "JWT Decoder",
             "route": "jwt/jwt-decoder",
             "icon": "MdOutlineGeneratingTokens",
             "description": "Decode and verify JSON Web Tokens",
+            "badge": true,
+            "badgeText": "New"
+          },
+          {
+            "childId": 3,
+            "name": "Base64 Encoder/Decoder",
+            "route": "base64/base64-enoderdecoder",
+            "icon": "MdCode",
+            "description": "Encode and decode Base64 strings easily",
             "badge": true,
             "badgeText": "New"
           }
@@ -67,8 +76,8 @@
             "route": "others/qr-generator",
             "icon": "MdOutlineQrCodeScanner",
             "description": "Create free QR Codes instantly",
-            "badge": true,
-            "badgeText": "new"
+            "badge": false,
+            "badgeText": null
           }
         ]
       }
